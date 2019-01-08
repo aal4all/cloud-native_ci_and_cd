@@ -53,7 +53,6 @@ func (sbd SQLBookDatabase) Initialize() error {
 	if err != nil {
 		return err
 	}
-	sbd.db.Exec(schema)
 
 	var firstBooks = `INSERT INTO books (isbn, title, author) VALUES ('978-1789619270', 'Kubernetes Design Patterns and Extensions', 'Onur Yilmaz'),  
 																	 ('B07HHDVSJK', 'Cloud-Native Continuous Integration and Delivery', 'Onur Yilmaz')`
