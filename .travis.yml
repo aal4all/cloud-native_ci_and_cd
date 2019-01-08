@@ -1,0 +1,10 @@
+sudo: reguired
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage:  static-code-check
+      script: docker build --rm -f docker/Dockerfile.static-code-check .
+
