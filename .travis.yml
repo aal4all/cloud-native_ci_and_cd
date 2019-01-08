@@ -18,6 +18,7 @@ jobs:
       script: docker build --rm -f docker/Dockerfile.unit-test .
     - stage: integration-test-postgres
       script:
+        - sudo /etc/init.d/postgresql stop
         - docker build -f docker/Dockerfile.integration-test -t falkobenthin/integration-test:20180108 .
         - docker run -d -p 5432:5432 --name postgres postgres
         - docker run --rm --link postgres:postgres gesellix/wait-for postgres:5432
