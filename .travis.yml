@@ -37,5 +37,5 @@ jobs:
         - docker run --rm --link mssql:mssql gesellix/wait-for mssql:1433
         - docker run -e DATABASE="mssql://sa:Password!@mssql:1433" --link mssql falkobenthin/integration-test:20180108
     - stage: build
-      script: - docker build --target production -t falkobenthin/build .
+      script: docker build --target production -t falkobenthin/build .
 
