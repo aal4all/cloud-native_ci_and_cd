@@ -36,4 +36,6 @@ jobs:
         - docker run -d -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password!" -p 1433:1433 --name mssql mcr.microsoft.com/mssql/server:2017-latest
         - docker run --rm --link mssql:mssql gesellix/wait-for mssql:1433
         - docker run -e DATABASE="mssql://sa:Password!@mssql:1433" --link mssql falkobenthin/integration-test:20180108
+    - stage: build
+      script: - docker build --target production -t falkobenthin/build .
 
