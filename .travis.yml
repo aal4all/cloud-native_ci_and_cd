@@ -25,6 +25,7 @@ jobs:
         - docker run -e DATABASE="postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable" --link postgres falkobenthin/integration-test:20180108
     - stage: integration-test-mysql
       script:
+        - sudo /etc/init.d/mysql stop
         - docker build -f docker/Dockerfile.integration-test -t falkobenthin/integration-test:20180108 .
         - docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=default --name mysql mysql
         - docker run --rm --link mysql:mysql gesellix/wait-for mysql:3306 -t 30
