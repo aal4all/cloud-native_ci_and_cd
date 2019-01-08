@@ -8,9 +8,8 @@ jobs:
     - stage:  static-code-check
       script: docker build --rm -f docker/Dockerfile.static-code-check .
     - stage: smoke-test
-      script:
-        - docker build -f docker/Dockerfile.smoke-test -t falkobenthin/smoke-test:20190108 .
-        - docker run -d -p 5432:5432 --name postgres postgres
-        - docker run --rm --link postgres:postgres gesellix/wait-for postgres:5432
-        - docker run -e DATABASE="postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable" --link postgres falkobenthin/smoke-test:20190108 
+      script: docker build -f docker/Dockerfile.smoke-test -t falkobenthin/smoke-test:20190108 .
+    - script: docker run -d -p 5432:5432 --name postgres postgres
+    - script: docker run --rm --link postgres:postgres gesellix/wait-for postgres:5432
+    - script: docker run -e DATABASE="postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable" --link postgres falkobenthin/smoke-test:20190108 
 
