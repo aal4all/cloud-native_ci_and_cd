@@ -16,3 +16,22 @@ jobs:
         - docker run -e DATABASE="postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable" --link postgres falkobenthin/smoke-test:20190108 
     - stage: unit-test
       script: docker build --rm -f docker/Dockerfile.unit-test .
+    - stage: integration-test-postgres
+      script:
+        - docker build -f docker/Dockerfile.integration-test -t falkobenthin/integration-test:20180108 .
+        - docker run -d -p 5432:5432 --name postgres postgres
+        - docker run --rm --link postgres:postgres gesellix/wait-for postgres:5432
+        - docker run -e DATABASE="postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable" --link postgres falkobenthin/integration-test:20180108
+    - stage: integration-test-mysql
+      script:
+        - docker build -f docker/Dockerfile.integration-test -t falkobenthin/integration-test:20180108 .
+        - docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=default --name mysql mysql
+        - docker run --rm --link mysql:mysql gesellix/wait-for mysql:3306 -t 30
+        - docker run -e DATABASE="mysql://root:password@mysql:3306/default" --link mysql falkobenthin/integration-test:20180108
+    - stage: integration-test-mssql
+      script:
+        - docker build -f docker/Dockerfile.integration-test -t falkobenthin/integration-test:20180108 .
+        - docker run -d -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password!" -p 1433:1433 --name mssql mcr.microsoft.com/mssql/server:2017-latest
+        - docker run --rm --link mssql:mssql gesellix/wait-for mssql:1433
+        - docker run -e DATABASE="mssql://sa:Password!@mssql:1433" --link mssql falkobenthin/integration-test:20180108
+
