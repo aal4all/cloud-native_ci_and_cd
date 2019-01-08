@@ -8,8 +8,10 @@ jobs:
     - stage:  static-code-check
       script: docker build --rm -f docker/Dockerfile.static-code-check .
     - stage: smoke-test
-      script: 
-        - systemctl stop postgres
+      script:
+        - id
+        - cat /etc/issue 
+        - sudo systemctl stop postgres
         - docker build -f docker/Dockerfile.smoke-test -t falkobenthin/smoke-test:20190108 .
         - docker run -d -p 5432:5432 --name postgres postgres
         - docker run --rm --link postgres:postgres gesellix/wait-for postgres:5432
