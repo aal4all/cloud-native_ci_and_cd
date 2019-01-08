@@ -14,4 +14,5 @@ jobs:
         - docker run -d -p 5432:5432 --name postgres postgres
         - docker run --rm --link postgres:postgres gesellix/wait-for postgres:5432
         - docker run -e DATABASE="postgresql://postgres:postgres@postgres:5432/postgres?sslmode=disable" --link postgres falkobenthin/smoke-test:20190108 
-
+    - stage: unit-test
+      script: docker build --rm -f docker/Dockerfile.unit-test .
